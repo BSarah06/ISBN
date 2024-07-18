@@ -1,0 +1,98 @@
+import java.util.Scanner;
+
+public class BookDatabase {
+
+    private String[] isbnArray;
+    private int count;
+
+    public BookDatabase(int size) {
+        isbnArray = new String[size];
+        count = 0;
+    }
+
+    public boolean validateISBN(String isbn) {
+        if (isbn.length() == 13) {
+            for (char c : isbn.toCharArray()) {
+                if (!Character.isDigit(c)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public void addISBN(String isbn) {
+        if (validateISBN(isbn) && count < isbnArray.length) {
+            isbnArray[count] = isbn;
+            count++;
+        } else {
+            System.out.println("Invalid ISBN or Database Full");
+        }
+    }
+
+    public boolean searchISBN(String isbn) {
+        for (int i = 0; i < count; i++) {
+            if (isbnArray[i].equals(isbn)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void printAllISBNs() {
+        for (int i = 0; i < count; i++) {
+            System.out.println(isbnArray[i]);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        BookDatabase db = new BookDatabase(10);  // Adjust size as needed
+
+        while (true) {
+            System.out.println("Enter 1 to add ISBN, 2 to search ISBN, 3 to print all ISBNs, 4 to exit:");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            if (choice == 1) {
+                System.out.print("Enter ISBN to add: ");
+                String isbn = scanner.nextLine();
+                db.addISBN(isbn);
+            } else if (choice == 2) {
+                System.out.print("Enter ISBN to search: ");
+                String isbn = scanner.nextLine();
+                if (db.searchISBN(isbn)) {
+                    System.out.println("ISBN found.");
+                } else {
+                    System.out.println("ISBN not found.");
+                }
+            } else if (choice == 3) {
+                db.printAllISBNs();
+            } else if (choice == 4) {
+                break;
+            } else {
+                System.out.println("Invalid choice. Try again.");
+            }
+        }
+
+        scanner.close();
+    }
+}
+
+/* Sample Output:
+
+Enter 1 to add ISBN, 2 to search ISBN, 3 to print all ISBNs, 4 to exit:
+1
+Enter ISBN to add: 9783161484100
+Enter 1 to add ISBN, 2 to search ISBN, 3 to print all ISBNs, 4 to exit:
+2
+Enter ISBN to search: 9783161484100
+ISBN found.
+Enter 1 to add ISBN, 2 to search ISBN, 3 to print all ISBNs, 4 to exit:
+3
+9783161484100
+Enter 1 to add ISBN, 2 to search ISBN, 3 to print all ISBNs, 4 to exit:
+4
+
+*/
